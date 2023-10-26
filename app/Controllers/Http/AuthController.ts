@@ -20,4 +20,33 @@ export default class AuthController {
 
     return token
   }
+
+  public async logout({ auth, response }: HttpContextContract) {
+    const isLogged = await auth.check()
+
+    if (!isLogged) {
+      return response.json({
+        message: 'No user logged',
+      })
+    }
+
+    await auth.logout()
+
+    return response.json({
+      message: 'Logged out',
+    })
+  }
+
+  public async getLogged({ auth, response }: HttpContextContract) {
+    const isLogged = await auth.check()
+
+    if (isLogged) {
+      const user = auth.user
+      return response.json(user)
+    }
+
+    return response.unauthorized({
+      message: 'User not logged',
+    })
+  }
 }

@@ -18,6 +18,9 @@ export default class User extends BaseModel {
   @column()
   public accountType: number
 
+  @column()
+  public holderKey: string
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
