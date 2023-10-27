@@ -16,6 +16,10 @@ interface CreateHolderResponse {
   'name': string
 }
 
+/**
+ * @param payload CreateHolderPayload
+ * @returns Returns a holder asset
+ */
 const createHolderTx = async (payload: CreateHolderPayload) => {
   const response = await request<CreateHolderPayload, CreateHolderResponse>(
     '/invoke/createNewHolder',
