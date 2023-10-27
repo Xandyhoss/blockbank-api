@@ -1,5 +1,7 @@
 import { request } from 'App/Utils/api'
 
+//CREATE NEW HOLDER
+
 interface CreateHolderPayload {
   name: string
   document: string

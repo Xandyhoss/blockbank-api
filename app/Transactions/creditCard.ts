@@ -1,5 +1,7 @@
 import { request } from 'App/Utils/api'
 
+//CREATE NEW CREDIT CARD
+
 interface CreateCreditCardPayload {
   creditCardName: string
 }
@@ -30,4 +32,35 @@ const createCreditCardTx = async (payload: CreateCreditCardPayload) => {
   return response
 }
 
-export { createCreditCardTx }
+//ACTIVATE CREDIT CARD AVAILABILITY
+
+interface ActivateCreditCardPayload {
+  owner: {
+    '@assetType': string
+    '@key': string
+  }
+}
+
+interface ActivateCreditCardResponse {
+  '@assetType': 'holder'
+  '@key': string
+  'cash': number
+  'ccAvailable': boolean
+  'document': string
+  'name': string
+}
+
+/**
+ * @param payload ActivateCreditCardPayload
+ * @returns Returns a holder asset
+ */
+const activateCreditCardTx = async (payload: ActivateCreditCardPayload) => {
+  const response = await request<ActivateCreditCardPayload, ActivateCreditCardResponse>(
+    '/invoke/activateCreditCard',
+    'post',
+    payload
+  )
+  return response
+}
+
+export { createCreditCardTx, activateCreditCardTx }
