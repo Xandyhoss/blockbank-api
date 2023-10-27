@@ -1,7 +1,6 @@
 import { request } from 'App/Utils/api'
 
 //CREATE NEW CREDIT CARD
-
 interface CreateCreditCardPayload {
   creditCardName: string
 }
@@ -33,7 +32,6 @@ const createCreditCardTx = async (payload: CreateCreditCardPayload) => {
 }
 
 //ACTIVATE CREDIT CARD AVAILABILITY
-
 interface ActivateCreditCardPayload {
   owner: {
     '@assetType': string

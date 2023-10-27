@@ -2,7 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Database from '@ioc:Adonis/Lucid/Database'
 import User from 'App/Models/User'
-import { createHolderTx } from 'App/Transactions/holders'
+import { createHolderTx, createTransferencyTx } from 'App/Transactions/holders'
 
 export default class HoldersController {
   public async create({ request, response }: HttpContextContract) {
@@ -44,5 +44,35 @@ export default class HoldersController {
       return response.status(200).json(transaction.holder)
     }
     return response.status(500).json(transaction.response.error)
+  }
+
+  public async transferency({ auth, request, response }: HttpContextContract) {
+    const createTransferencyValidator = schema.create({
+      receiverKey: schema.string(),
+      value: schema.number(),
+    })
+
+    const payload = await request.validate({ schema: createTransferencyValidator })
+
+    const user = auth.user!
+
+    const requestPayload = {
+      sender: {
+        '@assetType': 'holder',
+        '@key': user?.holderKey,
+      },
+      receiver: {
+        '@assetType': 'holder',
+        '@key': payload.receiverKey,
+      },
+      value: payload.value,
+    }
+
+    const res = await createTransferencyTx(requestPayload)
+
+    if (res.type === 'success') {
+      return response.status(200).json(res.value)
+    }
+    return response.status(500).json(res.error)
   }
 }

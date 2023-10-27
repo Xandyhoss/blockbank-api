@@ -31,4 +31,45 @@ const createHolderTx = async (payload: CreateHolderPayload) => {
   return response
 }
 
-export { createHolderTx }
+//CREATE NEW TRASNFERENCY
+
+interface CreateTransferencyPayload {
+  sender: {
+    '@assetType': string
+    '@key': string
+  }
+  receiver: {
+    '@assetType': string
+    '@key': string
+  }
+  value: number
+}
+
+interface CreateTrasnferencyResponse {
+  '@assetType': 'transferency'
+  '@key': string
+  'receiver': {
+    '@assetType': 'holder'
+    '@key': string
+  }
+  'sender': {
+    '@assetType': 'holder'
+    '@key': string
+  }
+  'value': number
+}
+
+/**
+ * @param payload CreateTransferencyPayload
+ * @returns Returns a transferency asset
+ */
+const createTransferencyTx = async (payload: CreateTransferencyPayload) => {
+  const response = await request<CreateTransferencyPayload, CreateTrasnferencyResponse>(
+    '/invoke/createNewTransferency',
+    'post',
+    payload
+  )
+  return response
+}
+
+export { createHolderTx, createTransferencyTx }
