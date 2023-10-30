@@ -2,7 +2,12 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Database from '@ioc:Adonis/Lucid/Database'
 import User from 'App/Models/User'
-import { createHolderTx, createTransferencyTx, makeDepositTx } from 'App/Transactions/holders'
+import {
+  createHolderTx,
+  createTransferencyTx,
+  makeDepositTx,
+  makeWithdrawTx,
+} from 'App/Transactions/holders'
 
 export default class HoldersController {
   public async create({ request, response }: HttpContextContract) {
@@ -14,8 +19,8 @@ export default class HoldersController {
       password: schema.string({ trim: true }, [rules.minLength(8)]),
       name: schema.string(),
       document: schema.string(),
-      cash: schema.number(),
-      ccAvailable: schema.boolean(),
+      cash: schema.number.optional(),
+      ccAvailable: schema.boolean.optional(),
     })
 
     const payload = await request.validate({ schema: userCreatorValidator })
@@ -94,6 +99,31 @@ export default class HoldersController {
     }
 
     const res = await makeDepositTx(requestPayload)
+
+    if (res.type === 'success') {
+      return response.status(200).json(res.value)
+    }
+    return response.status(500).json(res.error)
+  }
+
+  public async withdraw({ auth, request, response }: HttpContextContract) {
+    const makeWithdrawValidator = schema.create({
+      value: schema.number(),
+    })
+
+    const payload = await request.validate({ schema: makeWithdrawValidator })
+
+    const user = auth.user!
+
+    const requestPayload = {
+      holder: {
+        '@assetType': 'holder',
+        '@key': user?.holderKey,
+      },
+      value: payload.value,
+    }
+
+    const res = await makeWithdrawTx(requestPayload)
 
     if (res.type === 'success') {
       return response.status(200).json(res.value)

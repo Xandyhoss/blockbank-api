@@ -5,8 +5,8 @@ import { request } from 'App/Utils/api'
 interface CreateHolderPayload {
   name: string
   document: string
-  cash: number
-  ccAvailable: boolean
+  cash?: number
+  ccAvailable?: boolean
 }
 
 interface CreateHolderResponse {
@@ -100,4 +100,32 @@ const makeDepositTx = async (payload: MakeDepositPayload) => {
   return response
 }
 
-export { createHolderTx, createTransferencyTx, makeDepositTx }
+//MAKE WITHDRAWAL
+
+interface MakeWithdrawPayload {
+  value: number
+}
+
+interface MakeWithdrawResponse {
+  '@assetType': 'holder'
+  '@key': string
+  'cash': number
+  'ccAvailable': boolean
+  'document': string
+  'name': string
+}
+
+/**
+ * @param payload MakeWithdrawPayload
+ * @returns Returns a holder asset
+ */
+const makeWithdrawTx = async (payload: MakeWithdrawPayload) => {
+  const response = await request<MakeWithdrawPayload, MakeWithdrawResponse>(
+    '/invoke/makeWithdrawal',
+    'post',
+    payload
+  )
+  return response
+}
+
+export { createHolderTx, createTransferencyTx, makeDepositTx, makeWithdrawTx }
