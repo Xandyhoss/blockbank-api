@@ -72,4 +72,32 @@ const createTransferencyTx = async (payload: CreateTransferencyPayload) => {
   return response
 }
 
-export { createHolderTx, createTransferencyTx }
+//MAKE DEPOSIT
+
+interface MakeDepositPayload {
+  value: number
+}
+
+interface MakeDepositResponse {
+  '@assetType': 'holder'
+  '@key': string
+  'cash': number
+  'ccAvailable': boolean
+  'document': string
+  'name': string
+}
+
+/**
+ * @param payload MakeDepositPayload
+ * @returns Returns a holder asset
+ */
+const makeDepositTx = async (payload: MakeDepositPayload) => {
+  const response = await request<MakeDepositPayload, MakeDepositResponse>(
+    '/invoke/makeDeposit',
+    'post',
+    payload
+  )
+  return response
+}
+
+export { createHolderTx, createTransferencyTx, makeDepositTx }
