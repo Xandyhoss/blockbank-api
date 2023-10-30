@@ -61,4 +61,35 @@ const activateCreditCardTx = async (payload: ActivateCreditCardPayload) => {
   return response
 }
 
-export { createCreditCardTx, activateCreditCardTx }
+//UPDATE CREDIT CARD LIMIT
+interface UpdateCreditCardLimitPayload {
+  creditCard: {
+    '@assetType': string
+    '@key': string
+  }
+  value: number
+}
+
+interface UpdateCreditCardLimitResponse {
+  '@assetType': 'creditCard'
+  '@key': string
+  'limit': number
+  'limitUsed': number
+  'number': string
+  'creditCardName': string
+}
+
+/**
+ * @param payload UpdateCreditCardLimitPayload
+ * @returns Returns a creditCard asset
+ */
+const updateCreditCardLimitTx = async (payload: UpdateCreditCardLimitPayload) => {
+  const response = await request<UpdateCreditCardLimitPayload, UpdateCreditCardLimitResponse>(
+    '/invoke/updateCreditCardLimit',
+    'post',
+    payload
+  )
+  return response
+}
+
+export { createCreditCardTx, activateCreditCardTx, updateCreditCardLimitTx }
