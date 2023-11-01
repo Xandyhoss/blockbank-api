@@ -4,6 +4,7 @@ import Database from '@ioc:Adonis/Lucid/Database'
 import User from 'App/Models/User'
 import {
   createHolderTx,
+  createPurchaseTx,
   createTransferencyTx,
   makeDepositTx,
   makeWithdrawTx,
@@ -124,6 +125,33 @@ export default class HoldersController {
     }
 
     const res = await makeWithdrawTx(requestPayload)
+
+    if (res.type === 'success') {
+      return response.status(200).json(res.value)
+    }
+    return response.status(500).json(res.error)
+  }
+
+  public async purchase({ auth, request, response }: HttpContextContract) {
+    const makeWithdrawValidator = schema.create({
+      description: schema.string(),
+      value: schema.number(),
+    })
+
+    const payload = await request.validate({ schema: makeWithdrawValidator })
+
+    const user = auth.user!
+
+    const requestPayload = {
+      buyer: {
+        '@assetType': 'holder',
+        '@key': user?.holderKey,
+      },
+      description: payload.description,
+      value: payload.value,
+    }
+
+    const res = await createPurchaseTx(requestPayload)
 
     if (res.type === 'success') {
       return response.status(200).json(res.value)

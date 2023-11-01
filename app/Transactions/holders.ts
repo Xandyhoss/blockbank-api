@@ -128,4 +128,36 @@ const makeWithdrawTx = async (payload: MakeWithdrawPayload) => {
   return response
 }
 
-export { createHolderTx, createTransferencyTx, makeDepositTx, makeWithdrawTx }
+//CREATE NEW PURCHASE
+
+interface CreatePurchasePayload {
+  description: string
+  value: number
+}
+
+interface CreatePurchaseResponse {
+  '@assetType': 'purchase'
+  '@key': string
+  'description': string
+  'value': number
+  'buyer': {
+    '@assetType': 'holder'
+    '@key': string
+  }
+}
+
+/**
+ * Creates a new purchase to a holder account
+ * @param payload CreatePurchasePayload
+ * @returns Returns a purchase asset
+ */
+const createPurchaseTx = async (payload: CreatePurchasePayload) => {
+  const response = await request<CreatePurchasePayload, CreatePurchaseResponse>(
+    '/invoke/createNewPurchase',
+    'post',
+    payload
+  )
+  return response
+}
+
+export { createHolderTx, createTransferencyTx, makeDepositTx, makeWithdrawTx, createPurchaseTx }
