@@ -19,6 +19,7 @@ interface CreateCreditCardResponse {
 }
 
 /**
+ * Creates a new credit card to a holder
  * @param payload CreateCreditCardPayload
  * @returns Returns a credit card asset
  */
@@ -49,6 +50,7 @@ interface ActivateCreditCardResponse {
 }
 
 /**
+ * Activate the credit card function to a holder account
  * @param payload ActivateCreditCardPayload
  * @returns Returns a holder asset
  */
@@ -80,6 +82,7 @@ interface UpdateCreditCardLimitResponse {
 }
 
 /**
+ * Updates a credit card limit
  * @param payload UpdateCreditCardLimitPayload
  * @returns Returns a creditCard asset
  */
@@ -92,4 +95,36 @@ const updateCreditCardLimitTx = async (payload: UpdateCreditCardLimitPayload) =>
   return response
 }
 
-export { createCreditCardTx, activateCreditCardTx, updateCreditCardLimitTx }
+//UPDATE CREDIT CARD NAME
+interface UpdateCreditCardNamePayload {
+  creditCard: {
+    '@assetType': string
+    '@key': string
+  }
+  name: string
+}
+
+interface UpdateCreditCardNameResponse {
+  '@assetType': 'creditCard'
+  '@key': string
+  'limit': number
+  'limitUsed': number
+  'number': string
+  'creditCardName': string
+}
+
+/**
+ * Updates a credit card name
+ * @param payload UpdateCreditCardNamePayload
+ * @returns Returns a creditCard asset
+ */
+const updateCreditCardNameTx = async (payload: UpdateCreditCardNamePayload) => {
+  const response = await request<UpdateCreditCardNamePayload, UpdateCreditCardNameResponse>(
+    '/invoke/updateCreditCardName',
+    'post',
+    payload
+  )
+  return response
+}
+
+export { createCreditCardTx, activateCreditCardTx, updateCreditCardLimitTx, updateCreditCardNameTx }

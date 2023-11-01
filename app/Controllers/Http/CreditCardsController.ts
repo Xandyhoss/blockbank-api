@@ -4,6 +4,7 @@ import {
   activateCreditCardTx,
   createCreditCardTx,
   updateCreditCardLimitTx,
+  updateCreditCardNameTx,
 } from 'App/Transactions/creditCard'
 
 export default class CreaditCardsController {
@@ -69,6 +70,30 @@ export default class CreaditCardsController {
     }
 
     const res = await updateCreditCardLimitTx(requestPayload)
+
+    if (res.type === 'success') {
+      return response.status(200).json(res.value)
+    }
+    return response.status(500).json(res.error)
+  }
+
+  public async updateName({ request, response }: HttpContextContract) {
+    const updateCreditCardLimitValidator = schema.create({
+      creditCardKey: schema.string([]),
+      name: schema.string(),
+    })
+
+    const payload = await request.validate({ schema: updateCreditCardLimitValidator })
+
+    const requestPayload = {
+      creditCard: {
+        '@assetType': 'creditCard',
+        '@key': payload.creditCardKey,
+      },
+      name: payload.name,
+    }
+
+    const res = await updateCreditCardNameTx(requestPayload)
 
     if (res.type === 'success') {
       return response.status(200).json(res.value)
