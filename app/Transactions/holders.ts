@@ -79,17 +79,19 @@ interface MakeDepositPayload {
 }
 
 interface MakeDepositResponse {
-  '@assetType': 'holder'
+  '@assetType': 'deposit'
   '@key': string
-  'cash': number
-  'ccAvailable': boolean
-  'document': string
-  'name': string
+  'date': string
+  'holder': {
+    '@assetType': 'holder'
+    '@key': string
+  }
+  'value': number
 }
 
 /**
  * @param payload MakeDepositPayload
- * @returns Returns a holder asset
+ * @returns Returns a deposit asset
  */
 const makeDepositTx = async (payload: MakeDepositPayload) => {
   const response = await request<MakeDepositPayload, MakeDepositResponse>(
