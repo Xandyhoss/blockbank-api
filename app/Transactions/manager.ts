@@ -27,4 +27,23 @@ const createManagerTx = async (payload: CreateManagerPayload) => {
   return response
 }
 
-export { createManagerTx }
+// LIST MANAGERS
+type ListManagersResponse = Managers[]
+
+interface Managers {
+  '@assetType': 'manager'
+  '@key': string
+  'document': string
+  'name': string
+}
+
+/**
+ * List Managers
+ * @returns Returns a manager asset array
+ */
+const listManagersTx = async () => {
+  const response = await request<any, ListManagersResponse>('/query/listManagers', 'get')
+  return response
+}
+
+export { createManagerTx, listManagersTx }

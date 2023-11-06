@@ -2,7 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Database from '@ioc:Adonis/Lucid/Database'
 import User from 'App/Models/User'
-import { createManagerTx } from 'App/Transactions/manager'
+import { createManagerTx, listManagersTx } from 'App/Transactions/manager'
 
 export default class ManagersController {
   public async create({ request, response }: HttpContextContract) {
@@ -42,5 +42,14 @@ export default class ManagersController {
       return response.status(200).json(transaction.manager)
     }
     return response.status(500).json(transaction.response.error)
+  }
+
+  public async list({ response }: HttpContextContract) {
+    const res = await listManagersTx()
+
+    if (res.type === 'success') {
+      return response.status(200).json(res.value)
+    }
+    return response.status(500).json(res.error)
   }
 }

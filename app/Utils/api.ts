@@ -25,7 +25,7 @@ const api = axios.create({
 export const request = async <P, R>(
   url: string,
   method: string,
-  payload: P
+  payload?: P
 ): Promise<Result<R>> => {
   try {
     const response = await api.request({ method, url, data: payload })
