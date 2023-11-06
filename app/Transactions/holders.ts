@@ -109,12 +109,14 @@ interface MakeWithdrawPayload {
 }
 
 interface MakeWithdrawResponse {
-  '@assetType': 'holder'
+  '@assetType': 'withdrawal'
   '@key': string
-  'cash': number
-  'ccAvailable': boolean
-  'document': string
-  'name': string
+  'date': string
+  'holder': {
+    '@assetType': 'holder'
+    '@key': string
+  }
+  'value': number
 }
 
 /**
