@@ -5,6 +5,7 @@ Route.group(() => {
   Route.post('/activate', 'CreditCardsController.activate').middleware('managerAuth')
   Route.post('/updateLimit', 'CreditCardsController.updateLimit').middleware('managerAuth')
   Route.post('/updateName', 'CreditCardsController.updateName').middleware('holderAuth')
+  Route.post('/createPurchase', 'CreditCardsController.createPurchase').middleware('holderAuth')
 })
   .prefix('creditcard')
   .middleware(['checkLogin'])

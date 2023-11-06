@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema } from '@ioc:Adonis/Core/Validator'
 import {
   activateCreditCardTx,
+  createCreditCardPurchaseTx,
   createCreditCardTx,
   updateCreditCardLimitTx,
   updateCreditCardNameTx,
@@ -94,6 +95,32 @@ export default class CreaditCardsController {
     }
 
     const res = await updateCreditCardNameTx(requestPayload)
+
+    if (res.type === 'success') {
+      return response.status(200).json(res.value)
+    }
+    return response.status(500).json(res.error)
+  }
+
+  public async createPurchase({ request, response }: HttpContextContract) {
+    const createCreditCardPurchaseValidator = schema.create({
+      creditCardKey: schema.string([]),
+      description: schema.string(),
+      value: schema.number(),
+    })
+
+    const payload = await request.validate({ schema: createCreditCardPurchaseValidator })
+
+    const requestPayload = {
+      creditCard: {
+        '@assetType': 'creditCard',
+        '@key': payload.creditCardKey,
+      },
+      description: payload.description,
+      value: payload.value,
+    }
+
+    const res = await createCreditCardPurchaseTx(requestPayload)
 
     if (res.type === 'success') {
       return response.status(200).json(res.value)

@@ -127,4 +127,45 @@ const updateCreditCardNameTx = async (payload: UpdateCreditCardNamePayload) => {
   return response
 }
 
-export { createCreditCardTx, activateCreditCardTx, updateCreditCardLimitTx, updateCreditCardNameTx }
+//CREATE A CREDIT CARD PURCHASE
+interface CreateCreditCardPurchasePayload {
+  creditCard: {
+    '@assetType': string
+    '@key': string
+  }
+  description: string
+  value: number
+}
+
+interface CreateCreditCardPurchaseResponse {
+  '@assetType': 'creditCardPurchase'
+  '@key': string
+  'description': number
+  'value': number
+  'creditCard': {
+    '@assetType': 'creditCard'
+    '@key': string
+  }
+}
+
+/**
+ * Creates a credit card purchase
+ * @param payload CreateCreditCardPurchasePayload
+ * @returns Return a credit card purchase asset
+ */
+const createCreditCardPurchaseTx = async (payload: CreateCreditCardPurchasePayload) => {
+  const response = await request<CreateCreditCardPurchasePayload, CreateCreditCardPurchaseResponse>(
+    '/invoke/createNewCreditCardPurchase',
+    'post',
+    payload
+  )
+  return response
+}
+
+export {
+  createCreditCardTx,
+  activateCreditCardTx,
+  updateCreditCardLimitTx,
+  updateCreditCardNameTx,
+  createCreditCardPurchaseTx,
+}

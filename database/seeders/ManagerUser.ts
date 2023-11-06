@@ -14,7 +14,7 @@ export default class extends BaseSeeder {
     if (response.type === 'success') {
       await User.create({
         username: 'Xandyhoss',
-        password: 'teste',
+        password: '12345678',
         accountType: 1,
         holderKey: response.value['@key'],
       })
