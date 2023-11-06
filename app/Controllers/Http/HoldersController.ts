@@ -6,6 +6,7 @@ import {
   createHolderTx,
   createPurchaseTx,
   createTransferencyTx,
+  listHoldersTx,
   makeDepositTx,
   makeWithdrawTx,
 } from 'App/Transactions/holders'
@@ -152,6 +153,15 @@ export default class HoldersController {
     }
 
     const res = await createPurchaseTx(requestPayload)
+
+    if (res.type === 'success') {
+      return response.status(200).json(res.value)
+    }
+    return response.status(500).json(res.error)
+  }
+
+  public async list({ response }: HttpContextContract) {
+    const res = await listHoldersTx()
 
     if (res.type === 'success') {
       return response.status(200).json(res.value)

@@ -166,4 +166,30 @@ const createPurchaseTx = async (payload: CreatePurchasePayload) => {
   return response
 }
 
-export { createHolderTx, createTransferencyTx, makeDepositTx, makeWithdrawTx, createPurchaseTx }
+// LIST HOLDERS
+type ListHoldersResponse = Holder[]
+
+interface Holder {
+  '@assetType': 'holder'
+  '@key': string
+  'document': string
+  'name': string
+}
+
+/**
+ * List Holders
+ * @returns Returns a holder asset array
+ */
+const listHoldersTx = async () => {
+  const response = await request<any, ListHoldersResponse>('/query/listHolders', 'get')
+  return response
+}
+
+export {
+  createHolderTx,
+  createTransferencyTx,
+  makeDepositTx,
+  makeWithdrawTx,
+  createPurchaseTx,
+  listHoldersTx,
+}
