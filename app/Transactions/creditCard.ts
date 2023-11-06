@@ -146,6 +146,7 @@ interface CreateCreditCardPurchaseResponse {
     '@assetType': 'creditCard'
     '@key': string
   }
+  'date': string
 }
 
 /**
@@ -182,6 +183,7 @@ interface PayCreditCardInvoiceResponse {
     '@assetType': 'holder'
     '@key': string
   }
+  'date': string
 }
 
 /**

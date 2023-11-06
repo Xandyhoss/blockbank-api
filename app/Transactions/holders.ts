@@ -57,6 +57,7 @@ interface CreateTrasnferencyResponse {
     '@key': string
   }
   'value': number
+  'date': string
 }
 
 /**
@@ -148,6 +149,7 @@ interface CreatePurchaseResponse {
     '@assetType': 'holder'
     '@key': string
   }
+  'date': string
 }
 
 /**
