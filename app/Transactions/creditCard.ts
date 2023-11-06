@@ -162,10 +162,47 @@ const createCreditCardPurchaseTx = async (payload: CreateCreditCardPurchasePaylo
   return response
 }
 
+//PAY CREDIT CARD PURCHASE INVOICE
+interface PayCreditCardInvoicePayload {
+  creditCard: {
+    '@assetType': string
+    '@key': string
+  }
+  valueToPay: number
+}
+
+interface PayCreditCardInvoiceResponse {
+  '@assetType': 'creditCard'
+  '@key': string
+  'creditCardName': string
+  'limit': number
+  'limitUsed': number
+  'number': string
+  'owner': {
+    '@assetType': 'holder'
+    '@key': string
+  }
+}
+
+/**
+ * Pay a credit card invoice
+ * @param payload PayCreditCardInvoicePayload
+ * @returns Return a credit card asset
+ */
+const payCreditCardInvoiceTx = async (payload: PayCreditCardInvoicePayload) => {
+  const response = await request<PayCreditCardInvoicePayload, PayCreditCardInvoiceResponse>(
+    '/invoke/payCreditCardInvoice',
+    'post',
+    payload
+  )
+  return response
+}
+
 export {
   createCreditCardTx,
   activateCreditCardTx,
   updateCreditCardLimitTx,
   updateCreditCardNameTx,
   createCreditCardPurchaseTx,
+  payCreditCardInvoiceTx,
 }
