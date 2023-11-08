@@ -6,6 +6,7 @@ import {
   createHolderTx,
   createPurchaseTx,
   createTransferencyTx,
+  getDepositsByHolderKeyTx,
   getHolderByKeyTx,
   listHoldersTx,
   makeDepositTx,
@@ -170,7 +171,7 @@ export default class HoldersController {
     return response.status(500).json(res.error)
   }
 
-  public async get({ request, response }: HttpContextContract) {
+  public async getHolder({ request, response }: HttpContextContract) {
     const getHolderByKeyValidator = schema.create({
       params: schema.object().members({
         key: schema.string(),
@@ -187,6 +188,30 @@ export default class HoldersController {
     }
 
     const res = await getHolderByKeyTx(requestPayload)
+
+    if (res.type === 'success') {
+      return response.status(200).json(res.value)
+    }
+    return response.status(500).json(res.error)
+  }
+
+  public async getDeposits({ request, response }: HttpContextContract) {
+    const getDepositsByHolderKeyValidator = schema.create({
+      params: schema.object().members({
+        key: schema.string(),
+      }),
+    })
+
+    const payload = await request.validate({ schema: getDepositsByHolderKeyValidator })
+
+    const requestPayload = {
+      holder: {
+        '@assetType': 'holder',
+        '@key': payload.params.key,
+      },
+    }
+
+    const res = await getDepositsByHolderKeyTx(requestPayload)
 
     if (res.type === 'success') {
       return response.status(200).json(res.value)

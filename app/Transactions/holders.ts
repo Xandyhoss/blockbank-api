@@ -207,6 +207,37 @@ const getHolderByKeyTx = async (payload: GetHolderByKeyPayload) => {
   return response
 }
 
+// GET DEPOSITS BY HOLDER KEY
+interface GetDepositsByHolderKeyPayload {
+  holder: {
+    '@assetType': string
+    '@key': string
+  }
+}
+type GetDepositsByHolderKeyResponse = Deposit[]
+
+interface Deposit {
+  '@assetType': 'deposit'
+  '@key': string
+  'date': string
+  'holder': Holder
+  'txId': string
+  'value': number
+}
+
+/**
+ * Get deposits by holder key
+ * @returns Returns a deposit asset array
+ */
+const getDepositsByHolderKeyTx = async (payload: GetDepositsByHolderKeyPayload) => {
+  const response = await request<GetDepositsByHolderKeyPayload, GetDepositsByHolderKeyResponse>(
+    '/query/getDepositsByHolderKey',
+    'post',
+    payload
+  )
+  return response
+}
+
 export {
   createHolderTx,
   createTransferencyTx,
@@ -215,4 +246,5 @@ export {
   createPurchaseTx,
   listHoldersTx,
   getHolderByKeyTx,
+  getDepositsByHolderKeyTx,
 }
