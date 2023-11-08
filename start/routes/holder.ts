@@ -7,6 +7,7 @@ Route.group(() => {
   Route.post('/withdraw', 'HoldersController.withdraw').middleware('holderAuth')
   Route.post('/purchase', 'HoldersController.purchase').middleware('holderAuth')
   Route.get('/list', 'HoldersController.list').middleware('managerAuth')
+  Route.get('/key/:key', 'HoldersController.get').middleware('managerAuth')
 })
   .prefix('holder')
   .middleware(['checkLogin'])

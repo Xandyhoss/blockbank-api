@@ -185,6 +185,28 @@ const listHoldersTx = async () => {
   return response
 }
 
+// GET HOLDER BY KEY
+interface GetHolderByKeyPayload {
+  holder: {
+    '@assetType': string
+    '@key': string
+  }
+}
+type GetHolderByKeyResponse = Holder
+
+/**
+ * Get holder by key
+ * @returns Returns a holder asset
+ */
+const getHolderByKeyTx = async (payload: GetHolderByKeyPayload) => {
+  const response = await request<GetHolderByKeyPayload, GetHolderByKeyResponse>(
+    '/query/getHolderByKey',
+    'post',
+    payload
+  )
+  return response
+}
+
 export {
   createHolderTx,
   createTransferencyTx,
@@ -192,4 +214,5 @@ export {
   makeWithdrawTx,
   createPurchaseTx,
   listHoldersTx,
+  getHolderByKeyTx,
 }

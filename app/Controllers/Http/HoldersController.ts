@@ -6,6 +6,7 @@ import {
   createHolderTx,
   createPurchaseTx,
   createTransferencyTx,
+  getHolderByKeyTx,
   listHoldersTx,
   makeDepositTx,
   makeWithdrawTx,
@@ -162,6 +163,30 @@ export default class HoldersController {
 
   public async list({ response }: HttpContextContract) {
     const res = await listHoldersTx()
+
+    if (res.type === 'success') {
+      return response.status(200).json(res.value)
+    }
+    return response.status(500).json(res.error)
+  }
+
+  public async get({ request, response }: HttpContextContract) {
+    const getHolderByKeyValidator = schema.create({
+      params: schema.object().members({
+        key: schema.string(),
+      }),
+    })
+
+    const payload = await request.validate({ schema: getHolderByKeyValidator })
+
+    const requestPayload = {
+      holder: {
+        '@assetType': 'holder',
+        '@key': payload.params.key,
+      },
+    }
+
+    const res = await getHolderByKeyTx(requestPayload)
 
     if (res.type === 'success') {
       return response.status(200).json(res.value)
