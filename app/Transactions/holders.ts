@@ -169,7 +169,7 @@ const createPurchaseTx = async (payload: CreatePurchasePayload) => {
 // LIST HOLDERS
 type ListHoldersResponse = Holder[]
 
-interface Holder {
+export interface Holder {
   '@assetType': 'holder'
   '@key': string
   'document': string

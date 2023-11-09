@@ -1,4 +1,5 @@
 import { request } from 'App/Utils/api'
+import { Holder } from './holders'
 
 //CREATE NEW CREDIT CARD
 interface CreateCreditCardPayload {
@@ -200,6 +201,37 @@ const payCreditCardInvoiceTx = async (payload: PayCreditCardInvoicePayload) => {
   return response
 }
 
+// GET TRANSFERS BY HOLDER KEY
+interface GetCreditCardByHolderKeyPayload {
+  holder: {
+    '@assetType': string
+    '@key': string
+  }
+}
+type GetCreditCardByHolderKeyResponse = CreditCard[]
+
+interface CreditCard {
+  '@assetType': 'transferency'
+  '@key': string
+  'creditCardName': string
+  'owner': Holder
+  'limit': number
+  'limitUsed': number
+}
+
+/**
+ * Get transfers by holder key
+ * @returns Returns a transferency asset array
+ */
+const getCreditCardByHolderKeyTx = async (payload: GetCreditCardByHolderKeyPayload) => {
+  const response = await request<GetCreditCardByHolderKeyPayload, GetCreditCardByHolderKeyResponse>(
+    '/query/getCreditCardByHolderKey',
+    'post',
+    payload
+  )
+  return response
+}
+
 export {
   createCreditCardTx,
   activateCreditCardTx,
@@ -207,4 +239,5 @@ export {
   updateCreditCardNameTx,
   createCreditCardPurchaseTx,
   payCreditCardInvoiceTx,
+  getCreditCardByHolderKeyTx,
 }
