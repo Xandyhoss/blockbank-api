@@ -5,6 +5,7 @@ import {
   createCreditCardPurchaseTx,
   createCreditCardTx,
   getCreditCardByHolderKeyTx,
+  getCreditCardPurchasesByCreditCardKeyTx,
   payCreditCardInvoiceTx,
   updateCreditCardLimitTx,
   updateCreditCardNameTx,
@@ -171,6 +172,32 @@ export default class CreaditCardsController {
     }
 
     const res = await getCreditCardByHolderKeyTx(requestPayload)
+
+    if (res.type === 'success') {
+      return response.status(200).json(res.value)
+    }
+    return response.status(500).json(res.error)
+  }
+
+  public async getPurchases({ request, response }: HttpContextContract) {
+    const getCreditCardPurchasesByCreditCardKeyValidator = schema.create({
+      params: schema.object().members({
+        creditCard: schema.string(),
+      }),
+    })
+
+    const payload = await request.validate({
+      schema: getCreditCardPurchasesByCreditCardKeyValidator,
+    })
+
+    const requestPayload = {
+      creditCard: {
+        '@assetType': 'creditCard',
+        '@key': payload.params.creditCard,
+      },
+    }
+
+    const res = await getCreditCardPurchasesByCreditCardKeyTx(requestPayload)
 
     if (res.type === 'success') {
       return response.status(200).json(res.value)

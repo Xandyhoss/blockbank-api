@@ -8,6 +8,7 @@ Route.group(() => {
   Route.post('/createPurchase', 'CreditCardsController.createPurchase').middleware('holderAuth')
   Route.post('/payInvoice', 'CreditCardsController.payInvoice').middleware('holderAuth')
   Route.get('/:key', 'CreditCardsController.getCreditCard').middleware('holderAuth')
+  Route.get('/:creditCard/purchases', 'CreditCardsController.getPurchases').middleware('holderAuth')
 })
   .prefix('creditcard')
   .middleware(['checkLogin'])

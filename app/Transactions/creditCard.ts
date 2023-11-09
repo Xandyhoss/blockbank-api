@@ -201,7 +201,7 @@ const payCreditCardInvoiceTx = async (payload: PayCreditCardInvoicePayload) => {
   return response
 }
 
-// GET TRANSFERS BY HOLDER KEY
+// GET CREDITCARD BY HOLDER KEY
 interface GetCreditCardByHolderKeyPayload {
   holder: {
     '@assetType': string
@@ -232,6 +232,39 @@ const getCreditCardByHolderKeyTx = async (payload: GetCreditCardByHolderKeyPaylo
   return response
 }
 
+// GET CREDITCARD PURCHASES BY CREDITCARD KEY
+interface GetCreditCardPurchasesByCreditCardKeyPayload {
+  creditCard: {
+    '@assetType': string
+    '@key': string
+  }
+}
+type GetCreditCardPurchasesByCreditCardResponse = Purchase[]
+
+interface Purchase {
+  '@assetType': 'purchase'
+  '@key': string
+  'buyer': Holder
+  'date': string
+  'description': string
+  'txId': string
+  'value': number
+}
+
+/**
+ * Get credit card purchases by credit card key
+ * @returns Returns a purchase asset array
+ */
+const getCreditCardPurchasesByCreditCardKeyTx = async (
+  payload: GetCreditCardPurchasesByCreditCardKeyPayload
+) => {
+  const response = await request<
+    GetCreditCardPurchasesByCreditCardKeyPayload,
+    GetCreditCardPurchasesByCreditCardResponse
+  >('/query/getCreditCardPurchasesByCreditCardKey', 'post', payload)
+  return response
+}
+
 export {
   createCreditCardTx,
   activateCreditCardTx,
@@ -240,4 +273,5 @@ export {
   createCreditCardPurchaseTx,
   payCreditCardInvoiceTx,
   getCreditCardByHolderKeyTx,
+  getCreditCardPurchasesByCreditCardKeyTx,
 }
