@@ -220,8 +220,8 @@ interface CreditCard {
 }
 
 /**
- * Get transfers by holder key
- * @returns Returns a transferency asset array
+ * Get credit card by holder key
+ * @returns Returns a credit card asset
  */
 const getCreditCardByHolderKeyTx = async (payload: GetCreditCardByHolderKeyPayload) => {
   const response = await request<GetCreditCardByHolderKeyPayload, GetCreditCardByHolderKeyResponse>(

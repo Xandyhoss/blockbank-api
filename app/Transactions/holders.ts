@@ -301,6 +301,38 @@ const getTransfersByHolderKeyTx = async (payload: GetTransfersByHolderKeyPayload
   return response
 }
 
+// GET PURCHASES BY HOLDER KEY
+interface GetPurchasesByHolderKeyPayload {
+  holder: {
+    '@assetType': string
+    '@key': string
+  }
+}
+type GetPurchasesByHolderKeyResponse = Purchase[]
+
+interface Purchase {
+  '@assetType': 'purchase'
+  '@key': string
+  'buyer': Holder
+  'date': string
+  'description': string
+  'txId': string
+  'value': number
+}
+
+/**
+ * Get Pruchases by holder key
+ * @returns Returns a purchase asset array
+ */
+const getPurchasesByHolderKeyTx = async (payload: GetPurchasesByHolderKeyPayload) => {
+  const response = await request<GetPurchasesByHolderKeyPayload, GetPurchasesByHolderKeyResponse>(
+    '/query/getPurchasesByHolderKey',
+    'post',
+    payload
+  )
+  return response
+}
+
 export {
   createHolderTx,
   createTransferencyTx,
@@ -312,4 +344,5 @@ export {
   getDepositsByHolderKeyTx,
   getWithdrawalsByHolderKeyTx,
   getTransfersByHolderKeyTx,
+  getPurchasesByHolderKeyTx,
 }
