@@ -268,6 +268,39 @@ const getWithdrawalsByHolderKeyTx = async (payload: GetWithdrawalsByHolderKeyPay
   return response
 }
 
+// GET TRANSFERS BY HOLDER KEY
+interface GetTransfersByHolderKeyPayload {
+  holder: {
+    '@assetType': string
+    '@key': string
+  }
+  sent: boolean
+}
+type GetTransfersByHolderKeyResponse = Transferency[]
+
+interface Transferency {
+  '@assetType': 'transferency'
+  '@key': string
+  'date': string
+  'receiver': Holder
+  'sender': Holder
+  'txId': string
+  'value': number
+}
+
+/**
+ * Get transfers by holder key
+ * @returns Returns a transferency asset array
+ */
+const getTransfersByHolderKeyTx = async (payload: GetTransfersByHolderKeyPayload) => {
+  const response = await request<GetTransfersByHolderKeyPayload, GetTransfersByHolderKeyResponse>(
+    '/query/getTransfersByHolderKey',
+    'post',
+    payload
+  )
+  return response
+}
+
 export {
   createHolderTx,
   createTransferencyTx,
@@ -278,4 +311,5 @@ export {
   getHolderByKeyTx,
   getDepositsByHolderKeyTx,
   getWithdrawalsByHolderKeyTx,
+  getTransfersByHolderKeyTx,
 }

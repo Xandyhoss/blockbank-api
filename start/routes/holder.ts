@@ -10,6 +10,7 @@ Route.group(() => {
   Route.get('/:key', 'HoldersController.getHolder').middleware('managerAuth')
   Route.get('/:key/deposits', 'HoldersController.getDeposits').middleware('holderAuth')
   Route.get('/:key/withdrawals', 'HoldersController.getWithdrawals').middleware('holderAuth')
+  Route.post('/:key/transfers', 'HoldersController.getTransfers').middleware('holderAuth')
 })
   .prefix('holder')
   .middleware(['checkLogin'])
