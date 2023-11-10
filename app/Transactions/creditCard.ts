@@ -265,6 +265,39 @@ const getCreditCardPurchasesByCreditCardKeyTx = async (
   return response
 }
 
+// GET CREDITCARD PAYMENTS BY CREDITCARD KEY
+interface GetCreditCardPaymentsByCreditCardKeyPayload {
+  creditCard: {
+    '@assetType': string
+    '@key': string
+  }
+}
+type GetCreditCardPaymentsByCreditCardResponse = Payment[]
+
+interface Payment {
+  '@assetType': 'invoicePayment'
+  '@key': string
+  'creditCard': CreditCard
+  'date': string
+  'owner': Holder
+  'txId': string
+  'value': number
+}
+
+/**
+ * Get credit card payments by credit card key
+ * @returns Returns a payment asset array
+ */
+const getCreditCardPaymentsByCreditCardKeyTx = async (
+  payload: GetCreditCardPurchasesByCreditCardKeyPayload
+) => {
+  const response = await request<
+    GetCreditCardPurchasesByCreditCardKeyPayload,
+    GetCreditCardPurchasesByCreditCardResponse
+  >('/query/getPaymentsByCreditCardKey', 'post', payload)
+  return response
+}
+
 export {
   createCreditCardTx,
   activateCreditCardTx,
@@ -274,4 +307,5 @@ export {
   payCreditCardInvoiceTx,
   getCreditCardByHolderKeyTx,
   getCreditCardPurchasesByCreditCardKeyTx,
+  getCreditCardPaymentsByCreditCardKeyTx,
 }
