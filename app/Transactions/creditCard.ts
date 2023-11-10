@@ -289,11 +289,11 @@ interface Payment {
  * @returns Returns a payment asset array
  */
 const getCreditCardPaymentsByCreditCardKeyTx = async (
-  payload: GetCreditCardPurchasesByCreditCardKeyPayload
+  payload: GetCreditCardPaymentsByCreditCardKeyPayload
 ) => {
   const response = await request<
-    GetCreditCardPurchasesByCreditCardKeyPayload,
-    GetCreditCardPurchasesByCreditCardResponse
+    GetCreditCardPaymentsByCreditCardKeyPayload,
+    GetCreditCardPaymentsByCreditCardResponse
   >('/query/getPaymentsByCreditCardKey', 'post', payload)
   return response
 }
