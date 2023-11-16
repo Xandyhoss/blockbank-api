@@ -7,7 +7,7 @@ export default class AuthController {
     const isLogged = await auth.check()
 
     if (isLogged) {
-      return response.json({
+      return response.status(500).json({
         message: 'Already logged',
       })
     }
@@ -16,21 +16,24 @@ export default class AuthController {
       expiresIn: '7 days',
     })
 
-    response.encryptedCookie('token', token, { httpOnly: true })
+    response.encryptedCookie('token', token, { httpOnly: true, secure: true, sameSite: 'none' })
 
-    return token
+    const user = auth.user
+
+    return user
   }
 
   public async logout({ auth, response }: HttpContextContract) {
     const isLogged = await auth.check()
 
     if (!isLogged) {
-      return response.json({
+      return response.status(500).json({
         message: 'No user logged',
       })
     }
 
     await auth.logout()
+    response.clearCookie('token')
 
     return response.json({
       message: 'Logged out',
@@ -45,7 +48,7 @@ export default class AuthController {
       return response.json(user)
     }
 
-    return response.unauthorized({
+    return response.status(404).json({
       message: 'User not logged',
     })
   }
