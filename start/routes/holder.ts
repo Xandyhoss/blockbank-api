@@ -7,7 +7,7 @@ Route.group(() => {
   Route.post('/withdraw', 'HoldersController.withdraw').middleware('holderAuth')
   Route.post('/purchase', 'HoldersController.purchase').middleware('holderAuth')
   Route.get('/list', 'HoldersController.list').middleware('managerAuth')
-  Route.get('/:key', 'HoldersController.getHolder').middleware('managerAuth')
+  Route.get('/:key', 'HoldersController.getHolder')
   Route.get('/:key/deposits', 'HoldersController.getDeposits').middleware('holderAuth')
   Route.get('/:key/withdrawals', 'HoldersController.getWithdrawals').middleware('holderAuth')
   Route.post('/:key/transfers', 'HoldersController.getTransfers').middleware('holderAuth')

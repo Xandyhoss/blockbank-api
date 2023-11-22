@@ -13,10 +13,15 @@ export default class AuthController {
     }
 
     const token = await auth.attempt(username, password, {
-      expiresIn: '7 days',
+      expiresIn: '30 days',
     })
 
-    response.encryptedCookie('token', token, { httpOnly: true, secure: true, sameSite: 'none' })
+    response.encryptedCookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: '30d',
+    })
 
     const user = auth.user
 
