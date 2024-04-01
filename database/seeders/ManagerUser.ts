@@ -5,15 +5,15 @@ import { createManagerTx } from 'App/Transactions/manager'
 export default class extends BaseSeeder {
   public async run() {
     const payload = {
-      name: 'Alexandre Harrison',
-      document: '70075871602',
+      name: 'Administrador',
+      document: '12312312312',
     }
 
     const response = await createManagerTx(payload)
 
     if (response.type === 'success') {
       await User.create({
-        username: 'Xandyhoss',
+        username: 'administrador',
         password: '12345678',
         accountType: 1,
         holderKey: response.value['@key'],
